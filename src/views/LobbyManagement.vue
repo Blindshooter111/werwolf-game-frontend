@@ -23,6 +23,7 @@
 </template>
 <script setup>
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
+import Lobby from './Lobby.vue';
 </script>
 
 <script>
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       socket: null,
+      isCreator: false,
       lobbyId: "",
       serverMessage: "",
       clientId: "", // Hier wird die UUID gespeichert
@@ -54,10 +56,11 @@ export default {
 
       if (message.startsWith("LOBBY_CREATED")) {
         // Redirect the client to the /lobby route and pass lobbyId and clientId
-        this.$router.push({ name: "LobbyView", params: { lobbyId: this.lobbyId, clientId: this.clientId } });
+        this.isCreator = true; // Der Spieler hat die Lobby erstellt
+        this.$router.push({ name: "LobbyView", params: { lobbyId: this.lobbyId}, query: { clientId: this.clientId }  });
       } else if (message.startsWith("LOBBY_JOINED")) {
         // Redirect the client to the /lobby route and pass lobbyId and clientId
-        this.$router.push({ name: "LobbyView", params: { lobbyId: this.lobbyId, clientId: this.clientId } });
+        this.$router.push({ name: "LobbyView", params: { lobbyId: this.lobbyId}, query: { clientId: this.clientId }  });
       } else {
         this.serverMessage = message;
       }

@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import TitleScreen from '@/views/TitleScreen.vue';
 import LobbyJoin from '@/views/LobbyJoin.vue';
+import GameView from '@/views/GameView.vue';
 import Lobby from '@/views/Lobby.vue';
 import LobbyManagement from '@/views/LobbyManagement.vue';
+import TitleScreen from '@/views/TitleScreen.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,10 +24,18 @@ const routes: Array<RouteRecordRaw> = [
     component: LobbyJoin
   },
   {
-    path: "/lobby:lobbyId",
-    name: "LobbyView",
+    path: '/game/:gameId',
+    name: 'GameView',
+    component: GameView  
+  },
+  {
+    path: '/lobby/:lobbyId',
+    name: 'LobbyView',
     component: Lobby,
-    props: true
+    props: route => ({
+      lobbyId: route.params.lobbyId,
+      clientId: route.query.clientId, // Query-Parameter statt im Pfad
+    }),
   },
   {
     path: '/',
